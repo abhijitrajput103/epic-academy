@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+          body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        .signup {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .signup h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+            color: #3f51b5;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .field input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .field input:focus {
+            border-color: #3f51b5;
+            outline: none;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #3f51b5;
+            color: #fff;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <form method="post" class="signup">
+        <div class="field">
+            <input type="text" id="username" name="username" value="<%= useredit.username %>" placeholder="Username" required>
+        </div>
+        <div class="field">
+            <input type="text" id="email" name="email" value="<%= useredit.email %>" placeholder="Email Address" required>
+        </div>
+        <div class="field">
+            <input type="number" id="phone" name="phone" value="<%= useredit.phone %>" placeholder="Enter Your Mobile Number" required>
+        </div>
+        <div class="field">
+            <input type="password" id="password" value="<%= useredit.password %>" name="password" placeholder="Password" required>
+        </div>
+        <!-- <div class="field">
+            <input type="password" id="confirmpassword" value="<%= useredit.password %>" placeholder="Confirm password" required>
+        </div> -->
+        <div class="field btn">
+            <div class="btn-layer"></div>
+            <input type="submit" value="submit" >
+        </div>
+    </form> 
+</body>
+</html>

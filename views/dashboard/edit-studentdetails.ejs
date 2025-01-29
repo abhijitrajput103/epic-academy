@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enrollment Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      position: relative;
+      max-width: 600px;
+      width: 100%;
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      font-size: 1rem;
+    }
+
+    .container header {
+      font-size: 1.8rem;
+      color: #333;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form {
+      margin-top: 10px;
+    }
+
+    .input-box {
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    .input-box label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+      font-weight: bold;
+    }
+
+    .form input,
+    .form select {
+      height: 40px;
+      width: 100%;
+      outline: none;
+      font-size: 1rem;
+      color: #333;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 0 10px;
+      background: #f9f9f9;
+      transition: border-color 0.3s ease;
+    }
+
+    .form input:focus,
+    .form select:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    .form .column {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .gender-box {
+      margin-bottom: 15px;
+    }
+
+    .gender-box label {
+      font-weight: bold;
+      color: #555;
+    }
+
+    .gender-option {
+      display: flex;
+      gap: 15px;
+      margin-top: 5px;
+    }
+
+    .form button {
+      height: 45px;
+      width: 100%;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #007bff;
+      transition: background-color 0.3s ease;
+    }
+
+    .form button:hover {
+      background: #0056b3;
+    }
+
+    @media (max-width: 600px) {
+      .form .column {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <section class="container">
+    <header>Enrollment Form</header>
+    <form id="registrationForm" class="form" method="post">
+      <div class="input-box">
+        <label for="full-name">Full Name</label>
+        <input id="full-name" value="<%= stuedit.name %>" name="name" type="text" placeholder="Enter full name" required>
+      </div>
+
+      <div class="input-box">
+        <label for="course">Course Selection</label>
+        <select id="course" value="<%= stuedit.course %>" name="course" required>
+          <option value="" hidden>Select Course</option>
+          <option value="Class 9">Class 9</option>
+          <option value="Class 10">Class 10</option>
+          <option value="Class 11">Class 11</option>
+          <option value="Class 12">Class 12</option>
+          <option value="B.A">B.A</option>
+          <option value="B.Com">B.Com</option>
+          <option value="CUET">CUET</option>
+        </select>
+      </div>
+
+      <div class="column">
+        <div class="input-box">
+          <label for="phone">Phone Number</label>
+          <input id="phone" value="<%= stuedit.phone %>" name="phone" type="tel" pattern="[0-9]{10}" placeholder="Enter 10-digit phone number" required>
+        </div>
+        <div class="input-box">
+          <label for="dob">Birth Date</label>
+          <input id="dob" value="<%= stuedit.dob %>" name="dob" type="date" required>
+        </div>
+      </div>
+
+      <div class="gender-box">
+        <label>Gender</label>
+        <div class="gender-option">
+          <label><input type="radio" name="gender" value="<%= stuedit.gender %>"> Male</label>
+          <label><input type="radio" name="gender" value="<%= stuedit.gender %>"> Female</label>
+          <label><input type="radio" name="gender" value="<%= stuedit.gender %>"> Prefer not to say</label>
+        </div>
+      </div>
+
+      <div class="input-box">
+        <label for="street-address">Street Address</label>
+        <input id="street-address" value="<%= stuedit.address %>" name="address" type="text" placeholder="Enter street address" required>
+      </div>
+
+      <div class="column">
+        <div class="input-box">
+          <label for="country">Country</label>
+          <select id="country" name="country">
+            <option value="<%= stuedit.country %>" hidden>Select Country</option>
+            <option value="India">India</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="input-box">
+          <label for="city">City</label>
+          <select id="city" name="city" value="<%= stuedit.city %>">
+            <option value="" hidden>Select City</option>
+            <option value="Delhi">Delhi</option>
+            <option value="New Delhi">New Delhi</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit">Submit</button>
+    </form>
+  </section>
+</body>
+
+</html>

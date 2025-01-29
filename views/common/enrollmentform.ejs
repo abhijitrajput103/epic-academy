@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Form</title>
+  <style>
+    .container {
+      position: relative;
+      max-width: 600px;
+      width: 100%;
+      background: #FCEDDA;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      font-size: 1.2rem;
+    }
+
+    .container header {
+      font-size: 2rem;
+      color: #000;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .container .form {
+      margin-top: 15px;
+    }
+
+    .form .input-box {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .input-box label {
+      color: #000;
+    }
+
+    .form input, .form select {
+      height: 35px;
+      width: 100%;
+      outline: none;
+      font-size: 1rem;
+      color: #808080;
+      margin-top: 5px;
+      border: 1px solid #EE4E34;
+      border-radius: 6px;
+      padding: 0 15px;
+      background: #FCEDDA;
+    }
+
+    input:focus {
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .form .column {
+      display: flex;
+      flex-wrap: wrap;
+      column-gap: 15px;
+    }
+
+    .form .gender-box {
+      margin-top: 10px;
+    }
+
+    .form .gender-option {
+      display: flex;
+      column-gap: 15px;
+    }
+
+    .form button {
+      height: 40px;
+      width: 100%;
+      color: #FFF;
+      font-size: 1rem;
+      font-weight: 500;
+      margin-top: 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #EE4E34;
+      transition: 0.2s ease;
+    }
+
+    .form button:hover {
+      background: #D03D2B;
+    }
+  </style>
+</head>
+
+<body>
+
+  <section class="container">
+    <header><b>Enrollment Form</b></header>
+    <form id="registrationForm" class="form" action="/enrollment" method="post">
+      <div class="input-box">
+        <label for="full-name">Full Name</label>
+        <input required id="full-name" name="name" placeholder="Enter full name" type="text">
+      </div>
+      <div class="input-box">
+        <label for="course">Course Selection</label>
+        <select id="course" name="course" required>
+          <option value="" hidden>Select Course</option>
+          <option value="Class 9">Class 9</option>
+          <option value="Class 10">Class 10</option>
+          <option value="Class 11">Class 11</option>
+          <option value="Class 12">Class 12</option>
+          <option value="B.A">B.A</option>
+          <option value="B.Com">B.Com</option>
+          <option value="CUET">CUET</option>
+        </select>
+      </div>
+      <div class="column">
+        <div class="input-box">
+          <label for="phone">Phone Number</label>
+          <input required id="phone" name="phone" placeholder="Enter phone number" type="tel" pattern="[0-9]{10}" title="Enter a valid 10-digit phone number">
+        </div>
+        <div class="input-box">
+          <label for="dob">Birth Date</label>
+          <input required id="dob" name="dob" placeholder="Enter birth date" type="date">
+        </div>
+      </div>
+      <div class="gender-box">
+        <label>Gender</label>
+        <div class="gender-option">
+          <label><input type="radio" name="gender" value="Male" required> Male</label>
+          <label><input type="radio" name="gender" value="Female"> Female</label>
+          <label><input type="radio" name="gender" value="Prefer not to say"> Prefer not to say</label>
+        </div>
+      </div>
+      <div class="input-box">
+        <label for="street-address">Street Address</label>
+        <input required id="street-address" name="address" placeholder="Enter street address" type="text">
+      </div>
+      <div class="column">
+        <div class="input-box">
+          <label for="country">Country</label>
+          <select id="country" name="country" required>
+            <option value="" hidden>Select Country</option>
+            <option value="India">India</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="input-box">
+          <label for="city">City</label>
+          <select id="city" name="city" required>
+            <option value="" hidden>Select City</option>
+            <option value="Delhi">Delhi</option>
+            <option value="New Delhi">New Delhi</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+  </section>
+
+
+</body>
+
+</html>

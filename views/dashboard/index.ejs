@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        /* Header */
+        header {
+            background-color: #3f51b5;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Row and Columns */
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .col-3 {
+            flex: 1;
+            max-width: 300px;
+            background-color: #f1f1f1;
+            padding: 20px;
+            border-right: 1px solid #ddd;
+        }
+
+        .col-9 {
+            flex: 3;
+            padding: 20px;
+        }
+
+        /* Welcome Section */
+        .welcome {
+            text-align: center;
+            color: #333;
+        }
+
+        .welcome h1 {
+            font-size: 2.5rem;
+            color: #3f51b5;
+            margin-bottom: 10px;
+        }
+
+        .welcome p {
+            font-size: 2rem;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header Section -->
+    <header>
+        <%- include('../dashboard/header.ejs') %>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <aside class="col-3">
+                <%- include('../dashboard/left.ejs') %>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="col-9">
+                <div class="welcome">
+                    <h1>Welcome to Admin</h1>
+                    <p>Manage your administrative tasks efficiently.</p>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+
+</html>

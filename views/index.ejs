@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Page</title>
+</head>
+<style>
+  button {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    outline: none;
+    border: 0;
+    vertical-align: middle;
+    text-decoration: none;
+    background: transparent;
+    padding: 0;
+    font-size: inherit;
+    font-family: inherit;
+  }
+
+  button.learn-more {
+    width: 12rem;
+    height: auto;
+  }
+
+  button.learn-more .circle {
+    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+    position: relative;
+    display: block;
+    margin: 0;
+    width: 3rem;
+    height: 3rem;
+    background: #282936;
+    border-radius: 1.625rem;
+  }
+
+  button.learn-more .circle .icon {
+    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    background: #fff;
+  }
+
+  button.learn-more .circle .icon.arrow {
+    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+    left: 0.625rem;
+    width: 1.125rem;
+    height: 0.125rem;
+    background: none;
+  }
+
+  button.learn-more .circle .icon.arrow::before {
+    position: absolute;
+    content: "";
+    top: -0.29rem;
+    right: 0.0625rem;
+    width: 0.625rem;
+    height: 0.625rem;
+    border-top: 0.125rem solid #fff;
+    border-right: 0.125rem solid #fff;
+    transform: rotate(45deg);
+  }
+
+  button.learn-more .button-text {
+    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0.75rem 0;
+    margin: 0 0 0 1.85rem;
+    color: #282936;
+    font-weight: 700;
+    line-height: 1.6;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  button:hover .circle {
+    width: 100%;
+  }
+
+  button:hover .circle .icon.arrow {
+    background: #fff;
+    transform: translate(1rem, 0);
+  }
+
+  button:hover .button-text {
+    color: #fff;
+  }
+</style>
+
+<body>
+  <%- include('./common/header.ejs')%>
+    <!--Craousel Start-->
+    <!--Craousel Start-->
+    <div class="container-fluid mt-2 h-75">
+      <div id="demo" class="carousel slide" data-bs-ride="carousel">
+        <!-- Indicators/dots -->
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+          <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+          <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+          <button type="button" data-bs-target="#demo" data-bs-slide-to="3"></button>
+        </div>
+
+        <!-- The slideshow/carousel -->
+        <div class="carousel-inner">
+          <div class="carousel-item carousel-items active">
+            <img src="images/slider2.jpg" alt="Los Angeles" width="100%" class="img-fluid d-block">
+          </div>
+          <div class="carousel-item carousel-items">
+            <img src="images/slider1.jpg" alt="Chicago" width="100%" class="img-fluid d-block">
+          </div>
+          <div class="carousel-item carousel-items active">
+            <img src="images/slider2.jpg" alt="Los Angeles" width="100%" class="img-fluid d-block">
+          </div>
+          <div class="carousel-item carousel-items">
+            <img src="images/slider1.jpg" alt="Chicago" width="100%" class="img-fluid d-block">
+          </div>
+        </div>
+
+        <!-- Left and right controls/icons -->
+        <button class=" carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- First Craousel End-->
+    <div class="container-fluid mt-3 border border-dark border-3 rounded shadow-lg p-4"
+      style="background-color: #E4A11B;">
+      <h1 class="text-center mt-3"><u>COURSES</u></h1>
+      <div class="container mt-5">
+        <!-- Courses Grid -->
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+          <% for (var i=0; i < addcourse.length; i++) { %>
+            <div class="col">
+              <div class="card h-100 border-0 shadow-lg card-hover">
+                <img src="<%= addcourse[i].courseimage %>">
+                <div class="card-body">
+                  <h5 class="card-title text-center fw-bold">
+                    <%= addcourse[i].coursename %>
+                  </h5>
+                  <p class="card-text text-justify">
+                    <%= addcourse[i].courseprice %>
+                  </p>
+                  <button class="learn-more">
+                    <span class="circle" aria-hidden="true">
+                      <span class="icon arrow"></span>
+                    </span>
+                    <span class="button-text"><a href="/detail/<%= addcourse[i]._id %>">Learn More </a></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <% } %>
+
+              <!-- Class X -->
+              <!-- <div class="col">
+            <div class="card h-100 border-0 shadow-lg card-hover">
+              <img src="images/class10.jpg" class="card-img-top" alt="Class X">
+              <div class="card-body">
+                <h5 class="card-title text-center fw-bold">Class X</h5>
+                <p class="card-text text-justify">The Class X program is designed to guide students through this crucial
+                  year by providing in-depth coverage of the syllabus, strategic exam preparation, and personalized
+                  support
+                  for excelling in board examinations.</p>
+
+                <button class="learn-more">
+                  <span class="circle" aria-hidden="true">
+                    <span class="icon arrow"></span>
+                  </span>
+                  <span class="button-text"><a href="class10">Learn More </a></span>
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col">
+            <div class="card h-100 border-0 shadow-sm card-hover">
+              <img src="images/class11.jpg" class="card-img-top" alt="Class XI">
+              <div class="card-body">
+                <h5 class="card-title text-center fw-bold">Class XI</h5>
+                <p class="card-text text-justify">The Class XI course offers specialized subject-focused study plans,
+                  whether in Science, Commerce, or Arts streams, ensuring students transition smoothly from secondary
+                  education to advanced academic concepts.</p>
+
+                <button class="learn-more">
+                  <span class="circle" aria-hidden="true">
+                    <span class="icon arrow"></span>
+                  </span>
+                  <span class="button-text"><a href="class11">Learn More </a></span>
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col">
+            <div class="card h-100 border-0 shadow-sm card-hover">
+              <img src="images/class12.jpg" class="card-img-top" alt="Class XII">
+              <div class="card-body">
+                <h5 class="card-title text-center fw-bold">Class XII</h5>
+                <p class="card-text text-justify">The Class XII curriculum is structured to support students in
+                  achieving their best in board exams while preparing them for entrance tests and higher education
+                  opportunities in their chosen fields.</p>
+
+                <button class="learn-more">
+                  <span class="circle" aria-hidden="true">
+                    <span class="icon arrow"></span>
+                  </span>
+                  <span class="button-text"> <a href="class12">Learn More </a> </span>
+                </button>
+              </div>
+            </div>
+          </div> -->
+        </div>
+
+        <!-- Divider
+        <hr class="my-4 border-dark border-3">
+        <h1 class="text-center mb-4"><u>Extra Courses</u></h1>
+
+       
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+
+          <div class="col">
+            <div class="card h-100 border-0 shadow-sm card-hover">
+              <img src="images/cuet.jpg" class="card-img-top" alt="CUET">
+              <div class="card-body">
+                <h5 class="card-title text-center fw-bold">CUET</h5>
+                <p class="card-text text-justify">The CUET course prepares students for the Common University Entrance
+                  Test, focusing on core subjects and comprehensive practice to secure admission to top universities in
+                  India.</p>
+                <button class="learn-more">
+                  <span class="circle" aria-hidden="true">
+                    <span class="icon arrow"></span>
+                  </span>
+                  <span class="button-text"> <a href="cuet">Learn More </a> </span>
+                </button>
+              </div>
+            </div>
+          </div>
+         
+          <div class="col">
+            <div class="card h-100 border-0 shadow-sm card-hover">
+              <img src="images/ba.jpg" class="card-img-top" alt="BA Courses">
+              <div class="card-body">
+                <h5 class="card-title text-center fw-bold">BA Courses</h5>
+                <p class="card-text text-justify">Our BA courses cover a wide range of arts and humanities subjects,
+                  providing foundational knowledge and skills for academic and professional growth.</p>
+
+                <button class="learn-more">
+                  <span class="circle" aria-hidden="true">
+                    <span class="icon arrow"></span>
+                  </span>
+                  <span class="button-text"><a href="ba">Learn More </a></span>
+                </button>
+              </div>
+            </div>
+          </div>
+         
+          <div class="col">
+            <div class="card h-100 border-0 shadow-sm card-hover">
+              <img src="images/bcom.jpg" class="card-img-top" alt="B.Com Courses">
+              <div class="card-body">
+                <h5 class="card-title text-center fw-bold">B.Com Courses</h5>
+                <p class="card-text text-justify">Designed for aspiring commerce professionals, our B.Com courses
+                  include accounting, finance, and economics to build a strong foundation for corporate careers.</p>
+
+                <button class="learn-more">
+                  <span class="circle" aria-hidden="true">
+                    <span class="icon arrow"></span>
+                  </span>
+                  <span class="button-text"><a href="bcom">Learn More </a></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+      </div>
+
+      <!-- Testimonials -->
+      <div class="container-fluid my-5 p-4 border rounded" style="background-color: #E4A11B;">
+        <h1 class="text-center mb-4">Testimonials</h1>
+        <hr class="my-4 border-dark border-top border-3">
+        <div class="row">
+          <!-- Testimonials Section -->
+          <div class="col-md-4 border-end pe-4 mx-auto">
+            <!-- First Testimonial -->
+            <div class="row mb-4 border-bottom pb-3">
+              <div class="col-4 text-center m-auto">
+                <img src="images/blk_grl.webp" class="rounded-circle" height="100" width="100" alt="First Testimonial">
+              </div>
+              <div class="col-8">
+                <p class="text-justify fs-5">
+                  "I am incredibly grateful for the guidance and support I received during my CUET preparation. The
+                  personalized teaching, detailed study materials, and mock tests boosted my confidence and helped me
+                  excel. The constant motivation from the mentors kept me focused throughout. Thanks to their efforts, I
+                  achieved my dream and cleared CUET successfully!"
+                </p>
+              </div>
+            </div>
+            <!-- Second Testimonial -->
+            <div class="row pt-3">
+              <div class="col-4 text-center m-auto">
+                <img src="images/boy.webp" class="rounded-circle" height="100" width="100" alt="Second Testimonial">
+              </div>
+              <div class="col-8">
+                <p class="text-justify fs-5">
+                  "I am deeply thankful for the unwavering support and guidance I received during my CUET preparation.
+                  The
+                  expert teaching, well-structured materials, and regular mock tests were instrumental in building my
+                  confidence. The encouragement from the mentors kept me motivated and focused. Thanks to their efforts,
+                  I
+                  was able to achieve my goal and clear CUET successfully!"
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Facebook Embed -->
+          <div class="col-md-6 d-flex justify-content-center align-items-center">
+            <iframe
+              src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fprofile.php%3Fid%3D61559555462804&tabs=timeline&width=500&height=800&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
+              width="800" height="700" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
+              allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
+            </iframe>
+          </div>
+        </div>
+      </div>
+
+
+      <!--About Us -->
+      <%- include('./aboutus.ejs')%>
+        <!--Footer-->
+        <%- include('./common/footer.ejs')%>
+</body>
+
+</html>

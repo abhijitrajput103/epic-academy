@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Deatils</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">  
+</head>
+<body>
+  
+  <div class="container-fluid p-4" style="background-color: #E4A11B;">
+    <h1 class="text-center mb-4"><u> <%= product.coursename %> Course Details</u></h1>
+    <div class="container bg-white p-4 fs-2 rounded shadow">
+      <div class="row g-4">
+        <!-- Course Overview -->
+        <div class="col-md-6">
+
+          <img src="/<%= product.courseimage %>" height="100%" width="100%">
+       
+        </div>
+        <div class="col-md-6">
+          <h2 class="fw-bold">Course Overview</h2>
+          <p>
+            <%= product.courseoverview %>          </p>
+          <ul>
+            <li><strong>Duration:</strong> 1 Academic Year</li>
+            <li><strong>Subjects:</strong> <%= product.subjects %></li>
+            <li><strong>Mode:</strong> Online/Offline</li>
+          </ul>
+        </div>
+      </div>
+      <!-- Key Highlights -->
+      <div class="mt-5">
+        <h2 class="fw-bold">Key Highlights</h2>
+        <ul>
+          <li>Interactive sessions and hands-on practice</li>
+          <li>Comprehensive study materials and regular assignments</li>
+          <li>Focus on critical thinking and problem-solving skills</li>
+          <li>Periodic tests and performance analysis</li>
+          <li>Access to experienced faculty and doubt-clearing sessions</li>
+        </ul>
+      </div>
+      <!-- Curriculum -->
+      <div class="mt-5">
+        <h2 class="fw-bold">Curriculum</h2>
+        <p>
+          The Class <%= product.coursename %> curriculum is aligned with national academic standards, covering the following topics:
+        </p>
+        <ul>
+          <!-- <li><strong>Mathematics:</strong> Algebra, Geometry, Statistics, and Trigonometry</li>
+          <li><strong>Science:</strong> Physics, Chemistry, and Biology fundamentals</li>
+          <li><strong>Languages:</strong> Advanced Grammar, Comprehension, and Writing Skills</li>
+          <li><strong>Social Studies:</strong> History, Geography, Political Science, and Economics</li>
+        </ul> -->
+      </div>
+      <!-- Resources -->
+      <div class="mt-5">
+        <h2 class="fw-bold">Resources and Support</h2>
+        <ul>
+          <li>Access to online learning portal and digital resources</li>
+          <li>Regular webinars and mentoring sessions</li>
+          <li>24/7 support for queries and doubts</li>
+          <li>Practice papers and mock exams</li>
+        </ul>
+      </div>
+      <!-- Enrollment -->
+      <div class="mt-5 text-center">
+        <a href="/enrollmentform" class="btn btn-dark btn-lg">Enroll Now</a>
+      </div>
+    </div>
+  </div>
+ 
+</body>
+</html>
