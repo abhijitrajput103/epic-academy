@@ -4,25 +4,16 @@ var app = express();
 var router = express.Router();
 app.use(express.static('views'));
 app.use(express.static('upload'));
-var userschema = require('./model/userschema'); //Import Signup Schema
+var userschema = require('./model/userschema'); 
 var contactModel = require('./model/contactuschema');
 var addcourseModel = require('./model/addcourseschema');
-var studentModel = require('./model/studentdetailschema'); //Import student schema
+var studentModel = require('./model/studentdetailschema');
 var config = require('./db/config');
 const bodyparser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 const multer = require('multer');
-const multerS3 = require('multer-s3');
-const { v4: uuidv4 } = require('uuid');
 const nodemailer = require('nodemailer');
-const port = process.env.PORT;
-const mongoURI = process.env.MONGO_URI;
-const jwtSecret = process.env.JWT_SECRET;
-const emailUser = process.env.EMAIL;
-const emailPass = process.env.PASSWORD;
-const emailService = process.env.EMAIL_SERVICE;
-const otpExpiration = process.env.OTP_EXPIRATION;
 
 app.use(bodyparser.json()); //import body-parser
 app.use(bodyparser.urlencoded({ extended: true }));
@@ -103,6 +94,31 @@ router.get('/addcourse', async (req, res) => {
         console.log(err);
     }
 
+});
+router.get('/studentdetails', async (req, res) => {
+    try {
+        if (req.session.user && req.cookies.user_abhi) {
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 10;
+            const startIndex = (page - 1) * limit;
+
+            const totalStudents = await studentModel.countDocuments({});
+            const studentData = await studentModel.find({})
+                .skip(startIndex)
+                .limit(limit);
+
+            res.render('dashboard/studentdetails', {
+                studentData: studentData,
+                currentPage: page,
+                totalPages: Math.ceil(totalStudents / limit),
+                limit: limit
+            });
+        } else {
+            res.redirect('/');
+        }
+    } catch (err) {
+        console.log(err);
+    }
 });
 
 //Get Signup data from database

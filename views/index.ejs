@@ -97,9 +97,11 @@
 </style>
 
 <body>
-  <%- include('./common/header.ejs')%>
+  <%- include('./common/header.ejs') %>
+
+  
     <!--Craousel Start-->
-    <!--Craousel Start-->
+   
     <div class="container-fluid mt-2 h-75">
       <div id="demo" class="carousel slide" data-bs-ride="carousel">
         <!-- Indicators/dots -->
@@ -158,135 +160,13 @@
                     <span class="circle" aria-hidden="true">
                       <span class="icon arrow"></span>
                     </span>
-                    <span class="button-text"><a href="/detail/<%= addcourse[i]._id %>">Learn More </a></span>
+                    <span class="button-text"><a href="/detail/<%= addcourse[i].coursename%>">Learn More </a></span>
                   </button>
                 </div>
               </div>
             </div>
             <% } %>
-
-              <!-- Class X -->
-              <!-- <div class="col">
-            <div class="card h-100 border-0 shadow-lg card-hover">
-              <img src="images/class10.jpg" class="card-img-top" alt="Class X">
-              <div class="card-body">
-                <h5 class="card-title text-center fw-bold">Class X</h5>
-                <p class="card-text text-justify">The Class X program is designed to guide students through this crucial
-                  year by providing in-depth coverage of the syllabus, strategic exam preparation, and personalized
-                  support
-                  for excelling in board examinations.</p>
-
-                <button class="learn-more">
-                  <span class="circle" aria-hidden="true">
-                    <span class="icon arrow"></span>
-                  </span>
-                  <span class="button-text"><a href="class10">Learn More </a></span>
-                </button>
-              </div>
-            </div>
-          </div>
-          
-          <div class="col">
-            <div class="card h-100 border-0 shadow-sm card-hover">
-              <img src="images/class11.jpg" class="card-img-top" alt="Class XI">
-              <div class="card-body">
-                <h5 class="card-title text-center fw-bold">Class XI</h5>
-                <p class="card-text text-justify">The Class XI course offers specialized subject-focused study plans,
-                  whether in Science, Commerce, or Arts streams, ensuring students transition smoothly from secondary
-                  education to advanced academic concepts.</p>
-
-                <button class="learn-more">
-                  <span class="circle" aria-hidden="true">
-                    <span class="icon arrow"></span>
-                  </span>
-                  <span class="button-text"><a href="class11">Learn More </a></span>
-                </button>
-              </div>
-            </div>
-          </div>
-          
-          <div class="col">
-            <div class="card h-100 border-0 shadow-sm card-hover">
-              <img src="images/class12.jpg" class="card-img-top" alt="Class XII">
-              <div class="card-body">
-                <h5 class="card-title text-center fw-bold">Class XII</h5>
-                <p class="card-text text-justify">The Class XII curriculum is structured to support students in
-                  achieving their best in board exams while preparing them for entrance tests and higher education
-                  opportunities in their chosen fields.</p>
-
-                <button class="learn-more">
-                  <span class="circle" aria-hidden="true">
-                    <span class="icon arrow"></span>
-                  </span>
-                  <span class="button-text"> <a href="class12">Learn More </a> </span>
-                </button>
-              </div>
-            </div>
-          </div> -->
         </div>
-
-        <!-- Divider
-        <hr class="my-4 border-dark border-3">
-        <h1 class="text-center mb-4"><u>Extra Courses</u></h1>
-
-       
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-
-          <div class="col">
-            <div class="card h-100 border-0 shadow-sm card-hover">
-              <img src="images/cuet.jpg" class="card-img-top" alt="CUET">
-              <div class="card-body">
-                <h5 class="card-title text-center fw-bold">CUET</h5>
-                <p class="card-text text-justify">The CUET course prepares students for the Common University Entrance
-                  Test, focusing on core subjects and comprehensive practice to secure admission to top universities in
-                  India.</p>
-                <button class="learn-more">
-                  <span class="circle" aria-hidden="true">
-                    <span class="icon arrow"></span>
-                  </span>
-                  <span class="button-text"> <a href="cuet">Learn More </a> </span>
-                </button>
-              </div>
-            </div>
-          </div>
-         
-          <div class="col">
-            <div class="card h-100 border-0 shadow-sm card-hover">
-              <img src="images/ba.jpg" class="card-img-top" alt="BA Courses">
-              <div class="card-body">
-                <h5 class="card-title text-center fw-bold">BA Courses</h5>
-                <p class="card-text text-justify">Our BA courses cover a wide range of arts and humanities subjects,
-                  providing foundational knowledge and skills for academic and professional growth.</p>
-
-                <button class="learn-more">
-                  <span class="circle" aria-hidden="true">
-                    <span class="icon arrow"></span>
-                  </span>
-                  <span class="button-text"><a href="ba">Learn More </a></span>
-                </button>
-              </div>
-            </div>
-          </div>
-         
-          <div class="col">
-            <div class="card h-100 border-0 shadow-sm card-hover">
-              <img src="images/bcom.jpg" class="card-img-top" alt="B.Com Courses">
-              <div class="card-body">
-                <h5 class="card-title text-center fw-bold">B.Com Courses</h5>
-                <p class="card-text text-justify">Designed for aspiring commerce professionals, our B.Com courses
-                  include accounting, finance, and economics to build a strong foundation for corporate careers.</p>
-
-                <button class="learn-more">
-                  <span class="circle" aria-hidden="true">
-                    <span class="icon arrow"></span>
-                  </span>
-                  <span class="button-text"><a href="bcom">Learn More </a></span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
       </div>
 
       <!-- Testimonials -->
@@ -340,8 +220,45 @@
 
 
       <!--About Us -->
-      <%- include('./aboutus.ejs')%>
-        <!--Footer-->
+      <section id="about-us" class="py-5 bg-warning">
+        <div class="container-fluid">
+          <h1 align="center">About Us</h1>
+          <hr class="my-4 border-dark border-top border-3">
+        </div>
+        <div class="container">
+          <div class="row align-items-center">
+            <!-- Left Side: Image -->
+            <div class="col-lg-6 mb-4 mb-lg-0">
+              <img src="images/about-us.jpg" alt="About Us" class="img-fluid rounded shadow">
+            </div>
+            <!-- Right Side: Content -->
+            <div class="col-lg-6">
+              <h2 class="mb-4">About Epic Academy</h2>
+              <hr class="my-4 border-dark border-top border-3">
+              <p class="text-muted fs-4">
+                Established in <strong>2024</strong> in the heart of <strong>New Delhi</strong>, <strong>Epic
+                  Academy</strong> is dedicated to shaping the future of young minds. We pride ourselves on delivering a
+                high-quality education that not only builds academic excellence but also fosters critical thinking,
+                confidence, and personal growth.
+              </p>
+              <p class="text-muted fs-5">
+                With a team of passionate educators, innovative teaching methods, and cutting-edge resources, we aim to
+                transform learning into an engaging and rewarding journey. Whether you're preparing for competitive exams
+                like <strong>JEE, NEET, CUET</strong>, or excelling in your school studies, our programs are tailored to
+                meet your aspirations.
+              </p>
+              <p class="text-muted fs-5">
+                Situated in the vibrant capital city of India, Epic Academy is uniquely positioned to provide students with
+                a dynamic and enriching learning experience. Our state-of-the-art facilities and supportive environment are
+                designed to help students thrive academically and personally.
+              </p>
+              <a href="contactus" class="btn btn-primary btn-lg mt-3">Contact Us</a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!--Footer-->
+
         <%- include('./common/footer.ejs')%>
 </body>
 

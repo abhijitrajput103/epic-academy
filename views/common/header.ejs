@@ -85,17 +85,11 @@
               Courses
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownCourses">
-              <li><a class="dropdown-item fs-6" href="#">I-VIII</a></li>
-              <li><a class="dropdown-item fs-6" href="#">IX</a></li>
-              <li><a class="dropdown-item fs-6" href="#">X</a></li>
-              <li><a class="dropdown-item fs-6" href="#">XI</a></li>
-              <li><a class="dropdown-item fs-6" href="#">XII</a></li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li><a class="dropdown-item fs-6" href="#">CUET</a></li>
-              <li><a class="dropdown-item fs-6" href="#">BA (P/H)</a></li>
-              <li><a class="dropdown-item fs-6" href="#">B.Com (P/H)</a></li>
+              <% for (var i=0; i < addcourse.length; i++) { %>
+              <li><a class="dropdown-item fs-6" href="/detail/<%= addcourse[i].coursename %>"> <%= addcourse[i].coursename %></a></li>
+
+            
+              <% } %>
             </ul>
           </li>
         </ul>

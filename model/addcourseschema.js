@@ -1,5 +1,5 @@
 const mongoose=require('mongoose');
-// const bcrypt=require('bcrypt')
+
 const addcourseSchema=mongoose.Schema({
     coursename:{
         type:String,
