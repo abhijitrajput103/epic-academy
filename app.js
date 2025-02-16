@@ -1,10 +1,11 @@
+
 require('dotenv').config();
 var express = require('express');
 var app = express();
 var router = express.Router();
 app.use(express.static('views'));
 app.use(express.static('upload'));
-var userschema = require('./model/userschema'); 
+var userschema = require('./model/userschema');
 var contactModel = require('./model/contactuschema');
 var addcourseModel = require('./model/addcourseschema');
 var studentModel = require('./model/studentdetailschema');
@@ -18,6 +19,7 @@ const nodemailer = require('nodemailer');
 app.use(bodyparser.json()); //import body-parser
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(cookieParser());
+
 //Session For Admin Dashboard
 app.use(session({
     key: "user_abhi",
@@ -35,28 +37,41 @@ router.get('/', async (req, res) => {
     try {
         const addcourse = await addcourseModel.find({});
         res.render('index', { addcourse: addcourse });
-        console.log(addcourse);
+        // console.log(addcourse);
     } catch (err) {
         console.log(err);
     }
 });
-router.get('/contactus', function (req, res) {
-    res.render('contactus');
-});
-router.get('/aboutus', function (req, res) {
-    res.render('index/about-us');
+router.get('/contactus', async function (req, res) {
+    try {
+        const addcourse = await addcourseModel.find({});
+        res.render('contactus', { addcourse: addcourse });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('Server error');
+    }
 });
 
-router.get('/detail/:id', async (req, res) => {
+
+
+
+
+router.get('/detail/:coursename', async (req, res) => {
     try {
-        const product = await addcourseModel.findById(req.params.id);
-        res.render('detailedpage', { product: product })
+        const product = await addcourseModel.findOne({ coursename: req.params.coursename });
+        if (!product) {
+            return res.status(404).send('Course not found');
+        }
+        res.render('detailedpage', { product: product });
         console.log(product);
     }
     catch (err) {
-        console.log(err)
+        console.log(err);
+        res.status(500).send('Server error');
     }
 });
+
+
 //Dashboard login API
 router.get('/dashboard', async (req, res) => {
     try {
@@ -95,6 +110,53 @@ router.get('/addcourse', async (req, res) => {
     }
 
 });
+
+//Get Signup data from database
+router.get('/signupdata', async (req, res) => {
+    try {
+        if (req.session.user && req.cookies.user_abhi) {
+            const registrationdata = await userschema.find({});
+            res.render('dashboard/signupdata', { registrationdata: registrationdata });
+        }
+        else {
+            res.redirect('/');
+        }
+    } catch (err) {
+        console.log(err);
+    }
+
+});
+//Contactus data
+router.get('/contactusdata', async (req, res) => {
+    try {
+        if (req.session.user && req.cookies.user_abhi) {
+            const contactdata = await contactModel.find({});
+            res.render('dashboard/contactusdata', { contactdata: contactdata });
+        }
+        else {
+            res.redirect('/');
+        }
+    } catch (err) {
+        console.log(err);
+    }
+
+})
+//Addcourse data
+router.get('/viewcourse', async (req, res) => {
+    try {
+        if (req.session.user && req.cookies.user_abhi) {
+            const addcourse = await addcourseModel.find({});
+            res.render('dashboard/viewcourse', { addcourse: addcourse });
+            // console.log(addcourse);
+        }
+        else {
+            res.redirect('/')
+        }
+    } catch (err) {
+        console.log(err);
+    }
+
+})
 router.get('/studentdetails', async (req, res) => {
     try {
         if (req.session.user && req.cookies.user_abhi) {
@@ -121,67 +183,7 @@ router.get('/studentdetails', async (req, res) => {
     }
 });
 
-//Get Signup data from database
-router.get('/signupdata', async (req, res) => {
-    try {
-        if (req.session.user && req.cookies.user_abhi) {
-            const registrationdata = await userschema.find({});
-            res.render('dashboard/signupdata', { registrationdata: registrationdata });
-        }
-        else {
-            res.redirect('/');
-        }
-    } catch (err) {
-        console.log(err);
-    }
 
-});
-//Contactus data
-router.get('/contactusdata', async (req, res) => {
-    try {
-        if (req.session.user && req.cookies.user_abhi) {
-            const contactdata = await contactModel.find({});
-            res.render('dashboard/contactusdata', { contactdata: contactdata });
-            console.log(contactdata);
-        }
-        else {
-            res.redirect('/');
-        }
-    } catch (err) {
-        console.log(err);
-    }
-
-})
-//Addcourse data
-router.get('/viewcourse', async (req, res) => {
-    try {
-        if (req.session.user && req.cookies.user_abhi) {
-            const addcourse = await addcourseModel.find({});
-            res.render('dashboard/viewcourse', { addcourse: addcourse });
-            console.log(addcourse);
-        }
-        else {
-            res.redirect('/')
-        }
-    } catch (err) {
-        console.log(err);
-    }
-
-})
-router.get('/studentdetails', async (req, res) => {
-    try {
-        if (req.session.user && req.cookies.user_abhi) {
-            const studentData = await studentModel.find({});
-            res.render('dashboard/studentdetails', { studentData: studentData });
-            console.log(studentData);
-        }
-        else {
-            res.redirect('/')
-        }
-    } catch (err) {
-        console.log(err);
-    }
-});
 router.get('/enrollmentform', function (req, res) {
     res.render('common/enrollmentform');
 });
@@ -204,48 +206,81 @@ router.post('/enrollment', (req, res) => {
     // Saving the user instance to the database
     regpost.save()
         .then(() => res.json('Enrollment Complete'))
-        .catch(err => res.status(400).json({ error: err.message })); // Improved error handling
+        .catch(err => res.status(400).json({ error: err.message }));
 });
 //get resitration form
 router.get('/signupform', function (req, res) {
     res.render('common/signupform');
 });
-//saving data in form api
-router.post('/signupform', (req, res) => {
-    // Constructing the registration object
-    const register = {
-        username: req.body.username,
-        email: req.body.email,
-        password: req.body.password,
-        phone: req.body.phone // Corrected the key to match intended data
-    };
-    // Creating a new user instance
-    const regpost = new userschema(register);
+// Signup form submission with validation
+router.post('/signupform', async (req, res) => {
+    const { username, email, password, phone } = req.body;
 
-    // Saving the user instance to the database
-    regpost.save()
-        .then(() => res.json('Registration successful'))
-        .catch(err => res.status(400).json({ error: err.message })); // Improved error handling
+    // Basic validation
+    if (!username || !email || !password || !phone) {
+        return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({ error: 'Invalid email format' });
+    }
+
+    // Phone number validation
+    if (phone.length < 10 || phone.length > 15) {
+        return res.status(400).json({ error: 'Phone number must be between 10-15 digits' });
+    }
+
+    // Password strength validation
+    if (password.length < 8) {
+        return res.status(400).json({ error: 'Password must be at least 8 characters' });
+    }
+
+    try {
+        // Check if user already exists
+        const existingUser = await userschema.findOne({ $or: [{ email }, { username }] });
+        if (existingUser) {
+            return res.status(400).json({ error: 'User already exists' });
+        }
+
+        // Create new user
+        const newUser = new userschema({
+            username,
+            email,
+            password,
+            phone
+        });
+
+        // Save user (password will be hashed by pre-save hook)
+        await newUser.save();
+        res.json({ message: 'Registration successful' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error during registration' });
+    }
 });
-// login API
+
+// Login API 
 router.post('/login', async (req, res) => {
     var email = req.body.email;
     var password = req.body.password;
     try {
-        var user = await userschema.findOne({ email: email })
-            .exec()
-        // console.log(`user is ${user}`)
+        var user = await userschema.findOne({ email: email }).exec();
+        
         if (!user) {
-            res.redirect('/')
+            return res.status(401).json({ error: 'Invalid email or password' });
         }
-        user.comparePassword(password, (error, match) => {
-            if (!match) {
-                res.redirect('/');
-            }
 
+        user.comparePassword(password, (error, match) => {
+            if (error || !match) {
+                return res.status(401).json({ error: 'Invalid email or password' });
+            }
+            
+            req.session.user = user;
+            res.redirect('/dashboard');
         });
-        req.session.user = user;
-        res.redirect('/dashboard')
+
 
     }
     catch (error) {
@@ -287,8 +322,8 @@ router.post('/addcourse', upload.single('courseimage'), (req, res) => {
         price: req.body.price,
         discount: req.body.discount,
         courseimage: req.file.filename,
-        courseoverview:req.body.courseoverview,
-        subjects:req.body.subjects,
+        courseoverview: req.body.courseoverview,
+        subjects: req.body.subjects,
     };
     // Creating a new user instance
     const addcourse = new addcourseModel(viewcourse);
@@ -296,7 +331,7 @@ router.post('/addcourse', upload.single('courseimage'), (req, res) => {
     // Saving the user instance to the database
     addcourse.save()
         .then(() => res.json('Course Added'))
-        .catch(err => res.status(400).json({ error: err.message })); // Improved error handling
+        .catch(err => res.status(400).json({ error: err.message }));
 });
 
 
@@ -321,10 +356,6 @@ router.get('/edit/:id', async (req, res) => {
     catch (err) {
         console.log(err)
     }
-})
-//Update/Post data of edited field
-router.post('/edit/:id', async (req, res) => {
-    // Constructing the registration object
     const itemId = req.params.id;
     const updatedData = {
         username: req.body.username,
@@ -362,7 +393,7 @@ router.post('/contactusform', (req, res) => {
     // Saving the user instance to the database
     regpost.save()
         .then(() => res.json('Message Sent'))
-        .catch(err => res.status(400).json({ error: err.message })); // Improved error handling
+        .catch(err => res.status(400).json({ error: err.message }));
 });
 //Delete api for contactus
 router.get("/delete_2/:id", async (req, res) => {
@@ -379,7 +410,7 @@ router.get('/edit_2/:id', async (req, res) => {
     try {
         const contactusEdit = await contactModel.findById(req.params.id);
         res.render('dashboard/edit-contactus', { contactusEdit: contactusEdit })
-        console.log(contactusEdit);
+        // console.log(contactusEdit);
     }
     catch (err) {
         console.log(err)
@@ -422,7 +453,7 @@ router.get('/edit_3/:id', async (req, res) => {
     try {
         const courseEdit = await addcourseModel.findById(req.params.id);
         res.render('dashboard/edit-course', { courseEdit: courseEdit })
-        console.log(courseEdit);
+        // console.log(courseEdit);
     }
     catch (err) {
         console.log(err)
@@ -430,29 +461,60 @@ router.get('/edit_3/:id', async (req, res) => {
 })
 //Update/Post data of edited field
 router.post('/edit_3/:id', async (req, res) => {
-    // Constructing the registration object
+    // Validate required fields
+    const { coursename, price, discount } = req.body;
+    if (!coursename || !price || !discount) {
+        return res.status(400).json({ 
+            error: 'Course name, price, and discount are required fields' 
+        });
+    }
+
+    // Validate numeric fields
+    if (isNaN(price) || isNaN(discount)) {
+        return res.status(400).json({ 
+            error: 'Price and discount must be valid numbers' 
+        });
+    }
+
+    // Construct the update object
     const courseId = req.params.id;
     const editedCourse = {
         coursename: req.body.coursename,
-        price: req.body.price,
-        discount: req.body.discount,
-        courseimage: req.body.courseimage,
-        courseoverview:req.body.courseoverview,
-        subjects:req.body.subjects,
-    }
+        price: parseFloat(req.body.price),
+        discount: parseFloat(req.body.discount),
+        courseimage: req.body.courseimage || '',
+        courseoverview: req.body.courseoverview || '',
+        subjects: req.body.subjects || [],
+    };
+
     try {
-        const updatedCourses = await addcourseModel.findByIdAndUpdate(courseId, editedCourse)
+        const updatedCourses = await addcourseModel.findByIdAndUpdate(
+            courseId, 
+            editedCourse,
+            { new: true, runValidators: true }
+        );
+        
         if (!updatedCourses) {
-            return res.status(404).json({ message: "Item not found" });
+            return res.status(404).json({ 
+                error: 'Course not found' 
+            });
         }
-        res.redirect('dashboard/edit-course');
+
+        res.status(200).json({ 
+            message: 'Course updated successfully',
+            course: updatedCourses 
+        });
     }
     catch (err) {
-        res.status(500).json({ message: 'Server Error' });
+        console.error('Error updating course:', err);
+        res.status(500).json({ 
+            error: 'Failed to update course',
+            details: err.message 
+        });
     }
 });
-//Edit and delete for Student Details
 
+//Edit and delete for Student Details
 router.get("/delete_4/:id", async (req, res) => {
     try {
         const studentData = await studentModel.findByIdAndDelete
@@ -467,7 +529,7 @@ router.get('/edit_4/:id', async (req, res) => {
     try {
         const stuedit = await studentModel.findById(req.params.id);
         res.render('dashboard/edit-studentdetails', { stuedit: stuedit })
-        console.log(stuedit);
+        // console.log(stuedit);
     }
     catch (err) {
         console.log(err)
@@ -495,13 +557,13 @@ router.post('/edit_4/:id', async (req, res) => {
         res.redirect('../studentdetails');
     }
     catch (err) {
-        res.status(500).json({ message: 'server erroer' });
+        res.status(500).json({ message: 'server error' });
     }
 });
 
 //Forgot password form
 router.get("/forget", async (req, res) => {
-        res.render('forgetpassword');
+    res.render('forgetpassword');
 });
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
 router.post('/generate-otp', async (req, res) => {
@@ -516,10 +578,10 @@ router.post('/generate-otp', async (req, res) => {
 
     // Configure Nodemailer
     const transporter = nodemailer.createTransport({
-        service: process.env.EMAIL_SERVICE, // or another email provider
+        service: process.env.EMAIL_SERVICE,
         auth: {
-            user: process.env.EMAIL, // Add your email in .env
-            pass: process.env.PASSWORD, // Add your email password in .env
+            user: process.env.EMAIL,
+            pass: process.env.PASSWORD,
         },
     });
 
@@ -537,7 +599,7 @@ router.post('/generate-otp', async (req, res) => {
         // Save OTP in memory or a database (for demonstration, saving in session)
         req.session.otp = otp;
         req.session.otpEmail = email;
-        req.session.otpExpires = Date.now() + 300000; // OTP valid for 5 minutes
+        req.session.otpExpires = Date.now() + 300000;
 
         res.json({ message: 'OTP sent successfully!' });
     } catch (err) {
