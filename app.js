@@ -15,6 +15,8 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 const multer = require('multer');
 const nodemailer = require('nodemailer');
+var csvtojson = require("csvtojson");
+const fs = require('fs');
 
 app.use(bodyparser.json()); //import body-parser
 app.use(bodyparser.urlencoded({ extended: true }));
@@ -33,6 +35,8 @@ app.use(session({
 
 app.set('view engine', 'ejs');
 app.use(express.static('views'));
+
+
 router.get('/', async (req, res) => {
     try {
         const addcourse = await addcourseModel.find({});
@@ -51,8 +55,6 @@ router.get('/contactus', async function (req, res) {
         res.status(500).send('Server error');
     }
 });
-
-
 
 
 
@@ -161,7 +163,7 @@ router.get('/studentdetails', async (req, res) => {
     try {
         if (req.session.user && req.cookies.user_abhi) {
             const page = parseInt(req.query.page) || 1;
-            const limit = parseInt(req.query.limit) || 10;
+            const limit = parseInt(req.query.limit) || 50;
             const startIndex = (page - 1) * limit;
 
             const totalStudents = await studentModel.countDocuments({});
@@ -208,6 +210,7 @@ router.post('/enrollment', (req, res) => {
         .then(() => res.json('Enrollment Complete'))
         .catch(err => res.status(400).json({ error: err.message }));
 });
+
 //get resitration form
 router.get('/signupform', function (req, res) {
     res.render('common/signupform');
@@ -267,7 +270,7 @@ router.post('/login', async (req, res) => {
     var password = req.body.password;
     try {
         var user = await userschema.findOne({ email: email }).exec();
-        
+
         if (!user) {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
@@ -276,7 +279,7 @@ router.post('/login', async (req, res) => {
             if (error || !match) {
                 return res.status(401).json({ error: 'Invalid email or password' });
             }
-            
+
             req.session.user = user;
             res.redirect('/dashboard');
         });
@@ -293,6 +296,7 @@ router.post('/login', async (req, res) => {
 router.get('/addcourse', function (req, res) {
     res.render('/addcourse');
 });
+
 //File Upload
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -300,21 +304,23 @@ const storage = multer.diskStorage({
     },
     filename: function (req, file, cb) {
         cb(null, file.originalname);
-        //cb(null,uuidv4()+'-'+Date.now()+path.extname(file.originalanme))
+        //cb(null,uuidv4()+'-'+Date.now()+path.extname(file.originalname))
     }
 });
 
 const fileFilter = (req, file, cb) => {
-    const allowedFileTypes = ['image/jpeg', 'image/jpg', 'img/webp', 'img/png'];
+    const allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/webp', 'image/png', 'text/csv'];
     if (allowedFileTypes.includes(file.mimetype)) {
         cb(null, true);
-    }
-    else {
+    } else {
         cb(null, false);
     }
-}
+};
+
 let upload = multer({ storage, fileFilter });
-//saving data in form api
+
+//saving data in form api for course
+
 router.post('/addcourse', upload.single('courseimage'), (req, res) => {
     // Constructing the registration object
     const viewcourse = {
@@ -334,7 +340,26 @@ router.post('/addcourse', upload.single('courseimage'), (req, res) => {
         .catch(err => res.status(400).json({ error: err.message }));
 });
 
+router.post('/upload-students', upload.single('file'), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: 'No file uploaded' });
+        }
 
+        // Convert CSV to JSON
+        const students = await csvtojson().fromFile(req.file.path);
+
+        // Insert students into MongoDB
+        await studentModel.insertMany(students);
+
+        // Delete the uploaded file after processing
+        fs.unlinkSync(req.file.path);
+
+        res.status(201).json({ message: 'Students data uploaded successfully' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 //Delete api for registration
 router.get("/delete/:id", async (req, res) => {
@@ -464,15 +489,15 @@ router.post('/edit_3/:id', async (req, res) => {
     // Validate required fields
     const { coursename, price, discount } = req.body;
     if (!coursename || !price || !discount) {
-        return res.status(400).json({ 
-            error: 'Course name, price, and discount are required fields' 
+        return res.status(400).json({
+            error: 'Course name, price, and discount are required fields'
         });
     }
 
     // Validate numeric fields
     if (isNaN(price) || isNaN(discount)) {
-        return res.status(400).json({ 
-            error: 'Price and discount must be valid numbers' 
+        return res.status(400).json({
+            error: 'Price and discount must be valid numbers'
         });
     }
 
@@ -489,27 +514,27 @@ router.post('/edit_3/:id', async (req, res) => {
 
     try {
         const updatedCourses = await addcourseModel.findByIdAndUpdate(
-            courseId, 
+            courseId,
             editedCourse,
             { new: true, runValidators: true }
         );
-        
+
         if (!updatedCourses) {
-            return res.status(404).json({ 
-                error: 'Course not found' 
+            return res.status(404).json({
+                error: 'Course not found'
             });
         }
 
-        res.status(200).json({ 
+        res.status(200).json({
             message: 'Course updated successfully',
-            course: updatedCourses 
+            course: updatedCourses
         });
     }
     catch (err) {
         console.error('Error updating course:', err);
-        res.status(500).json({ 
+        res.status(500).json({
             error: 'Failed to update course',
-            details: err.message 
+            details: err.message
         });
     }
 });

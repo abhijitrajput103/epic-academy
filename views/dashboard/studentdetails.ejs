@@ -93,74 +93,131 @@
 
       <!-- Main Content -->
       <main class="col-9 content">
-        <h2 class="table-title">Registered Students</h2>
-        
-        <% if (studentData.length > 0) { %>
-        <div class="table-wrapper">
-          <table class="table table-striped table-bordered align-middle">
-            <thead class="table-primary">
-              <tr>
-                <th>Name</th>
-                <th>Course</th>
-                <th>Phone</th>
-                <th>DOB</th>
-                <th>Gender</th>
-                <th>Address</th>
-                <th>Country</th>
-                <th>City  </th>
-                <th>Edit/Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% for (var i = 0; i < studentData.length; i++) { %>
-              <tr>
-                <td><%= studentData[i].name %></td>
-                <td><%= studentData[i].course %></td>
-                <td><%= studentData[i].phone %></td>
-                <td><%= studentData[i].dob %></td>
-                <td><%= studentData[i].gender %></td>
-                <td><%= studentData[i].address %></td>
-                <td><%= studentData[i].country %></td>
-                <td><%= studentData[i].city %></td>
-                <td class="text-center">
-                  <a href="/edit_4/<%= studentData[i]._id %>" class="btn btn-warning btn-custom me-2">Edit</a>
-                  <a href="/delete_4/<%= studentData[i]._id %>" class="btn btn-danger btn-custom">Delete</a>
-                </td>
-              </tr>
-              <% } %>
-            </tbody>
-          </table>
+        <h2 class="table-title text-center">Register Students in Bulk </h2>
+        <div class="card p-2">
+          <h3 class="mb-4 text-center">Upload CSV File</h3>
+          <form id="uploadForm">
+            <div class="mb-3">
+              <input type="file" class="form-control" id="fileInput" accept=".csv" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+          </form>
         </div>
-        <% } else { %>
-        <p class="no-record">No record found.</p>
-        <% } %>
-        
-        <!-- Pagination Controls -->
-        <nav aria-label="Page navigation" class="mt-4">
-          <ul class="pagination justify-content-center">
-            <% if (currentPage > 1) { %>
-              <li class="page-item">
-                <a class="page-link" href="/studentdetails?page=<%= currentPage - 1 %>&limit=<%= limit %>">Previous</a>
-              </li>
+        <h2 class="table-title text-center mt-2"> View Registered Students</h2>
+        <% if (studentData.length> 0) { %>
+          <div class="table-wrapper">
+            <table class="table table-striped table-bordered align-middle">
+              <thead class="table-primary">
+                <tr>
+                  <th>Name</th>
+                  <th>Course</th>
+                  <th>Phone</th>
+                  <th>DOB</th>
+                  <th>Gender</th>
+                  <th>Address</th>
+                  <th>Country</th>
+                  <th>City </th>
+                  <th>Edit/Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for (var i=0; i < studentData.length; i++) { %>
+                  <tr>
+                    <td>
+                      <%= studentData[i].name %>
+                    </td>
+                    <td>
+                      <%= studentData[i].course %>
+                    </td>
+                    <td>
+                      <%= studentData[i].phone %>
+                    </td>
+                    <td>
+                      <%= studentData[i].dob %>
+                    </td>
+                    <td>
+                      <%= studentData[i].gender %>
+                    </td>
+                    <td>
+                      <%= studentData[i].address %>
+                    </td>
+                    <td>
+                      <%= studentData[i].country %>
+                    </td>
+                    <td>
+                      <%= studentData[i].city %>
+                    </td>
+                    <td class="text-center">
+                      <a href="/edit_4/<%= studentData[i]._id %>" class="btn btn-warning btn-custom me-2">Edit</a>
+                      <a href="/delete_4/<%= studentData[i]._id %>" class="btn btn-danger btn-custom">Delete</a>
+                    </td>
+                  </tr>
+                  <% } %>
+              </tbody>
+            </table>
+          </div>
+          <% } else { %>
+            <p class="no-record">No record found.</p>
             <% } %>
-            
-            <% for (let i = 1; i <= totalPages; i++) { %>
-              <li class="page-item <%= i === currentPage ? 'active' : '' %>">
-                <a class="page-link" href="/studentdetails?page=<%= i %>&limit=<%= limit %>"><%= i %></a>
-              </li>
-            <% } %>
-            
-            <% if (currentPage < totalPages) { %>
-              <li class="page-item">
-                <a class="page-link" href="/studentdetails?page=<%= currentPage + 1 %>&limit=<%= limit %>">Next</a>
-              </li>
-            <% } %>
-          </ul>
-        </nav>
+
+              <!-- Pagination Controls -->
+              <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                  <% if (currentPage> 1) { %>
+                    <li class="page-item">
+                      <a class="page-link"
+                        href="/studentdetails?page=<%= currentPage - 1 %>&limit=<%= limit %>">Previous</a>
+                    </li>
+                    <% } %>
+
+                      <% for (let i=1; i <=totalPages; i++) { %>
+                        <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                          <a class="page-link" href="/studentdetails?page=<%= i %>&limit=<%= limit %>">
+                            <%= i %>
+                          </a>
+                        </li>
+                        <% } %>
+
+                          <% if (currentPage < totalPages) { %>
+                            <li class="page-item">
+                              <a class="page-link"
+                                href="/studentdetails?page=<%= currentPage + 1 %>&limit=<%= limit %>">Next</a>
+                            </li>
+                            <% } %>
+                </ul>
+              </nav>
       </main>
 
     </div>
   </div>
+
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', async function (event) {
+      event.preventDefault(); 
+      const fileInput = document.getElementById('fileInput');
+      if (!fileInput.files.length) {
+        alert("Please select a file.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', fileInput.files[0]);
+
+      try {
+        const response = await fetch('/upload-students', {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.json();
+        alert(result.message || "Upload successful!");
+        window.location.reload(); // Reload to show new data
+
+      } catch (error) {
+        alert("Error uploading file.");
+      }
+    });
+  </script>
 
   <!-- Bootstrap JS Bundle with Popper -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
